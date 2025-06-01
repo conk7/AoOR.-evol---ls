@@ -10,5 +10,5 @@ wheels/
 # Virtual environments
 .venv
 
-src/_calc_vals.py
+src/_get_vals.py
 report/answers/BestAnswers.tar.gz
