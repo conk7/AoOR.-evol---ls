@@ -30,8 +30,6 @@ def measure_algo(algorithm: Callable, benchmarks_path: Path, N: int = 100):
         ps.append(p)
         parts.append(machine_parts)
 
-        
-
     avg_times = []
     total_ms = []
     total_ps = []
@@ -75,8 +73,12 @@ def get_val_from_file(benchmark: Path, answer: Path):
             machine_parts.append(set(tokens[1:]))
 
     with open(answer, "r") as f:
-        machine_clusters = list(map(lambda x: int(x.split('_')[1]), f.readline().strip().split()))
-        part_clusters = list(map(lambda x: int(x.split('_')[1]), f.readline().strip().split()))
+        machine_clusters = list(
+            map(lambda x: int(x.split("_")[1]), f.readline().strip().split())
+        )
+        part_clusters = list(
+            map(lambda x: int(x.split("_")[1]), f.readline().strip().split())
+        )
 
     return fitness(machine_clusters, part_clusters, machine_parts)
 
@@ -96,7 +98,7 @@ def print_results(
     for benchmark, time_ms, m, p, val in zip(
         benchmarks, avg_times, total_ms, total_ps, total_vals
     ):
-        print(f"{benchmark:<15}{time_ms:<20.4f}{val:<20.4f}")
+        print(f"{benchmark:<15}{time_ms:<20.4f}{val:<20.6f}")
         file_path = answers_path / (benchmark.__str__() + ".sol")
         file_path.touch()
 
@@ -107,5 +109,21 @@ def print_results(
             )
         if written_val < val:
             with open(file_path, "w") as f:
-                f.write(" ".join(['m' + str(i) + '_' + str(m) for i, m in zip(range(1, len(m) + 1), map(str, m))]) + "\n")
-                f.write(" ".join(['p' + str(i) + '_' + str(p) for i, p in zip(range(1, len(p) + 1), map(str, p))]) + "\n")
+                f.write(
+                    " ".join(
+                        [
+                            "m" + str(i) + "_" + str(m)
+                            for i, m in zip(range(1, len(m) + 1), map(str, m))
+                        ]
+                    )
+                    + "\n"
+                )
+                f.write(
+                    " ".join(
+                        [
+                            "p" + str(i) + "_" + str(p)
+                            for i, p in zip(range(1, len(p) + 1), map(str, p))
+                        ]
+                    )
+                    + "\n"
+                )

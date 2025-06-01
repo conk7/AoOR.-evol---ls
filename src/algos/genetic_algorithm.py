@@ -3,9 +3,10 @@ import math
 from typing import List, Set
 
 
-POP_SIZE = 30
+POP_SIZE = 50
 ELITE_SIZE = POP_SIZE // 10
-NUM_GENERATIONS = 15
+NUM_NEW_RANDOM_SOLUTIONS = POP_SIZE // 10
+NUM_GENERATIONS = 25
 MUTATION_RATE = 0.1
 MUTATION_STRENGTH = 0.1
 TOURNAMENT_SIZE = 5
@@ -140,12 +141,15 @@ def genetic_algorithm(
             range(len(population)), key=fitnesses.__getitem__, reverse=True
         )[:ELITE_SIZE]
         new_population = [population[i][:] for i in elite_idx]
-        while len(new_population) < POP_SIZE:
+        while len(new_population) < POP_SIZE - NUM_NEW_RANDOM_SOLUTIONS:
             parent1 = tournament(population, fitnesses)
             parent2 = tournament(population, fitnesses)
             child = crossover(parent1, parent2)
             child = mutate(child)
             new_population.append(child)
+        while len(new_population) < POP_SIZE:
+            new_population.append([random.random() for _ in range(m + 1)])
+
         population = new_population
 
     return best_m, best_p, best_val
