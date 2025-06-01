@@ -34,7 +34,7 @@ def fitness(
 
 def decode(chromosome: List[float], m: int):
     k = max(1, int(math.floor(chromosome[-1] * m)))
-    m_clusters = [math.ceil(g * k) for g in chromosome[:-1]]
+    m_clusters = [max(1, math.ceil(g * k)) for g in chromosome[:-1]]
     return m_clusters, k
 
 
@@ -112,12 +112,10 @@ def mutate(chromosome: List[float]):
 
 def genetic_algorithm(
     machine_parts: List[Set[int]],
-    k: int = None,
 ):
     m = len(machine_parts)
     p = max(part for parts in machine_parts for part in parts)
-    if k is None:
-        k = int(math.sqrt(m + p)) + 1
+    k = int(math.sqrt(m + p)) + 1
     population = [[random.random() for _ in range(m + 1)] for _ in range(POP_SIZE)]
 
     best_m = None
@@ -133,7 +131,7 @@ def genetic_algorithm(
                 machine_clusters, part_clusters, machine_parts, k
             )
             val = fitness(machine_clusters, part_clusters, machine_parts)
-            fitnesses.append(fitness(machine_clusters, part_clusters, machine_parts))
+            fitnesses.append(val)
 
             if val > best_val:
                 best_val, best_m, best_p = val, machine_clusters, part_clusters
