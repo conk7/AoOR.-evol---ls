@@ -30,7 +30,7 @@ def fitness(
             if (not processed) and same_cluster:
                 n0_in += 1
 
-    return (n1 - n1_out) / (n1 + n0_in)
+    return (n1 - n1_out) / (n1 + n0_in) if n1 + n0_in > 0 else 0
 
 
 def decode(chromosome: List[float], m: int):
